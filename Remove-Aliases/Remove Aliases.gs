@@ -1,7 +1,7 @@
 var DOMAIN = 'YOUR_DOMAIN'
 
 function getOUs(match){
-  match = new RegExp("Students")  //Only remove Aliases from Users within OUs containing the string "Students".
+  match = new RegExp("Students")
   var pageToken, users = new Array()
   do{
     var allUsers = AdminDirectory.Users.list({
@@ -15,7 +15,9 @@ function getOUs(match){
         users.push(allUsers.users[i])
       }
     }
-    // Do Stuff with Users
+    pageToken = allUsers.pageToken
+  }while(pageToken){}
+      // Do Stuff with Users
     for (var i in users){
       var user = users[i].primaryEmail
       //get all of users aliaes
@@ -27,6 +29,4 @@ function getOUs(match){
         Logger.log("Removed Alias %s from %s", alias, user)
       }
     }
-    pageToken = allUsers.pageToken
-  }while(pageToken){}
 }
