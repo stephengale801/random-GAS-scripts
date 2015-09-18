@@ -1,0 +1,56 @@
+<!doctype html>
+
+<body>
+<div id="container">
+  <div>
+  <!-- Define Target OU from Drop-down -->
+    <span> Target Lab&nbsp;</span><select id="selector1"> <!-- This section is static based on our OU Structure-->
+     <option value="Trips Lounge">Trip's Lounge </option> 
+     <option value="Distance Lab">Distance Lab </option> 
+     <option value="North Lab">North Lab </option> 
+     <option value="South Lab">South Lab </option>
+     <option disabled="disabled">----</option> <!-- The fillSelect() function adds options after this based on Actuve User's Scope-->
+     
+    </select>
+  </div>
+  <div>
+  <!-- Define NewParentOU from Drop-down -->
+    <span> Move To&nbsp;</span><select  id="selector2">
+      <option value="HS/Students">HS/Students</option>
+      <option value="K8/Students">K8/Students</option>
+      <option value="NWEA Testing">NWEA Testing</option>
+      <option value="Moby Max">Moby Max</option>
+      <option disabled="disabled">----</option>
+    </select>
+  </div>
+  <div id="run">
+    <input type="button" value="Run"
+    onclick="google.script.run.MoveOU(document.getElementById('selector1').value,document.getElementById('selector2').value)" />
+  </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    google.script.run.withSuccessHandler(fillSelect).doSomething();
+function fillSelect(addOptions){
+//fill Selector 2 with all available OUs within User scope
+addOptions.sort()
+addOptions.sort()
+    var select1 = document.getElementById('selector1') 
+    var select2 = document.getElementById('selector2')
+    for ( i in addOptions){
+      var option1 = document.createElement("option");
+      option1.text = addOptions[i].targetValue
+      option1.value = addOptions[i].targetValue
+      select1.add(option1);
+      if (addOptions[i].parentValue != '' ){
+      console.log(addOptions[i].parentValue)
+        var option2 = document.createElement("option");
+        option2.text = addOptions[i].parentValue
+        option2.value = addOptions[i].parentValue
+        select2.add(option2)
+        }
+      }
+    }
+
+</script>
