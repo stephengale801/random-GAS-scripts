@@ -7,7 +7,7 @@
 
 <b>Second</b> - Change all instances of "SPREADSHEET_ID" to the ID of a new Spreadsheet which you have edit privileges to.
 
-<b>Third</b> - Change the array a[] within the file SyncGroups.gs to match a Comma Separated List of the Groups you're wanting to sync.
+<b>Third</b> - Change the array a[] within the file SyncGroups.gs to match a Comma Separated List of the Groups you're wanting to sync. Example: ["Class of 2016", "Class of 2017", "Class of 2018"] 
 
 ####This script will not create any new groups or OUs.  All groups and OUs must be created beforehand.
 ##Execution
