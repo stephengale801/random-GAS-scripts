@@ -17,4 +17,4 @@ After OU, User, and Chrome information has been imported - run the function with
 
 Once the Groups have been imported, execute the function within SyncGroups.gs - syncGroups().
 
-This is an extremely long process, and will only sync around 3-4 groups at any given time, based on the number of users.  This is the reason that the array a[] is defined.  Upon completion, make sure that all targeted groups were synced and that the execution didn't time out.  In the event that the script timed out, remove the Groups from a[] which completed and re-run the syncGroup() function.
+This is an extremely long process, and will only sync around <b>3-4 groups </b> at any given time, based on the number of users.  This is the reason that the array a[] is defined.  Upon completion, make sure that all targeted groups were synced and that the execution didn't time out.  In the event that the script timed out, remove the Groups from a[] which completed and re-run the syncGroup() function.
