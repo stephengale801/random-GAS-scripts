@@ -1,5 +1,5 @@
 function removeViewer() {
-  var allSites, site, domain = "YOURDOMAIN", viewers, editors, owners, user = new RegExp("SomeUser"), status = new Array()
+  var allSites, site, domain = "YOURDOMAIN", viewers, editors, owners, user = new RegExp("SomeUser")
   var removeEditor = false
   var removeOwner = false
   var removeViewer = false
@@ -21,7 +21,6 @@ function removeViewer() {
           if (user.test(viewers[j])){
             site.removeViewer(viewers[j])
           }}
-        status.push("Viewer "+ site.getName()+ " " + site.getUrl())
         Logger.log("Viewer - %s (%s)",site.getName(), site.getUrl())
       }}
     if (removeEditor){
@@ -30,7 +29,6 @@ function removeViewer() {
           if (user.test(editors[j])){
             site.removeViewer(editors[j])
           }}
-        status.push("Owner "+ site.getName()+ " " + site.getUrl())
         Logger.log("Editor - %s (%s)",site.getName(), site.getUrl())
       }}
     if (removeOwner){
@@ -39,7 +37,6 @@ function removeViewer() {
           if (user.test(owners[j])){
             site.removeViewer(owners[j])
           }}
-        status.push("Owner "+ site.getName()+ " " + site.getUrl())
         Logger.log("Owner - %s (%s)",site.getName(), site.getUrl())
       }}
   }
