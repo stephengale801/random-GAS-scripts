@@ -1,4 +1,4 @@
-function removeViewer() {
+function removeUser() {
   var allSites, site, domain = "YOURDOMAIN", viewers, editors, owners, user = new RegExp("SomeUser")
   var removeEditor = false
   var removeOwner = false
