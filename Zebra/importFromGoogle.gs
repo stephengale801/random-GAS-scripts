@@ -24,7 +24,7 @@ function updateStaff() {
   exclude = exclude.substring(0,exclude.length-1)
   var sheet, staff = new Array(),limitUsers = new RegExp(limit,"i"),excludeUsers = new RegExp(exclude,"i"), page, pageToken, user
   sheet = staffSheet
-  sheet.clear().appendRow(["Staff","OUs","Scope"])
+  sheet.clear().appendRow(["Staff","OUs","Scope","Building Description","Regex(OU)"])
   do{
     page = AdminDirectory.Users.list({
       maxResults:100,
