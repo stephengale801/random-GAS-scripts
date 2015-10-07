@@ -2,6 +2,9 @@
 /*variables*/
 try{
   var form = FormApp.openById("FORM_ID") //Should be pulled from Addon interface when finished
+  .setCollectEmail(true)
+  .setProgressBar(false)
+  .setRequireLogin(true)
   var ss = SpreadsheetApp.openById(form.getDestinationId())
   var domain = 'YOURDOMAIN'  //define from UI... need to fix
   
