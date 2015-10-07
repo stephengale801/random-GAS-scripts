@@ -11,7 +11,8 @@ The setup functions are found in the importFromGoogle.gs and will only need to b
 
 Once staff and students are imported, a division needs to be made to prevent all the Students from apearing in one Checkbox list.  This division is called buildings, though it may represent something much smaller (Grades or Graduating Class Years).  This will be imported based on your OU structure as well.
 
-At present, there is no "getBuildings()" function.  The location of the buildings is Column 4 and 5 of the "Staff" sheet of the form results.  Column 4 is the separation as it will appear in the Form and column 5 is a unique value that will be used in a Regular Expression to define the OU. Lack of this function is the first fix that needs to be made.
+At present, there is no "getBuildings()" function.  The location of the buildings is Column 4 and 5 of the "Staff" sheet of the form results.  Column 4 is the separation as it will appear in the Form and column 5 is a unique value that will be used in a Regular Expression to define the OU.  Example: column4 = Class of 2016, Class of 2017, Class of 2018... column5 = 2016, 2017, 2018... 
+Lack of this function is the first fix that needs to be made.
 
 Once buildings are defined - the function "importOptionsToForm" on updateForm.gs can be run.  This function makes changes to the Google Form that was defined during setup.  The form should be blank before running the function.  If there are items on the form, there is a "clearForm" function included in the updateForm.gs file as well.
 
