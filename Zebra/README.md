@@ -1,5 +1,5 @@
 #Zebra
-is a referee style application (hopefully addon) which allows Google Apps Administrators to deligate sending users to a pre-build Penalty Box OU.  The idea being that the Penalty Box would have restricted settings and limited navigation capability.  Users are sent there as part of some disciplinary action.
+is a referee style application (hopefully addon) which allows Google Apps Administrators to deligate sending users to a pre-build Penalty Box OU.  The idea being that the Penalty Box would have restricted settings and limited navigation capability.  Users are sent there as part of some disciplinary action.  The name is derived from my days watching our High School's hockey team and being kicked out of more than one match for chanting at the refs "Zebra zebra short and stout, find your head and pull it out."
 
 ##Setup
 At present, Setup involves creating a Google Form, recording the form ID as well as your Google Apps Domain name in the "importFromGoogle.gs" file.  All files in this collection should be contained within one Google Apps Script project.
