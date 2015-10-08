@@ -31,3 +31,5 @@ Defining a scope will restrict which OUs authorized staff will be able to refere
 
 ##Audit Log
 Because this involves moving users and executes the redCard() function as the GAFE Administrator, Auditing is important.  The audit log will be updated every time a user is moved either by the submission of the script or when their duration runs out.  If there is a username mismatch or an attempted scope violation, it will be logged and shouldn't execute the redCard(). Any and all errors will also be logged.
+## redCard.gs is in the ALPHA phase.
+There are still *a lot* of items that need to be addressed before BETA 
