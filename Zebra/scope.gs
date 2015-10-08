@@ -1,5 +1,4 @@
-function getStudents(scope){
- scope = "3rd Grade" //test scope - hard coded until I pull from UI/Spreadsheet
+function getScope(scope){
  var re = new RegExp(scope), page, pageToken, students = new Array(), student
  
  do{
