@@ -44,7 +44,8 @@ function hash(sheet,n,x,y){
   }
   for (var j = min; j < max; j++){
     if(sheet.getRange(j, y).getValue() == x.substring(1,x.length-1)){
-     that = sheet.getRange(j,y).getValue()
+     that = sheet.getRange(j,y).getValue();
+     return that;
     }
   }
   return that;
