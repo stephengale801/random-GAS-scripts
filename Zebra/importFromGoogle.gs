@@ -46,10 +46,9 @@ function updateStaff() {
     sheet.appendRow([staff[i].primaryEmail,staff[i].orgUnitPath]) 
   }
   sheet.getRange("A2:B").sort(2)
-  importStaffToForm()
 }
 function updateStudents(){
-  var limit = "Students", exclude = ''
+  var limit = "Student", exclude = ''
   var excludeList = ["Generic","Suspended","Outgoing","Graduated"]  //import from UI, Store in Sheet
   for (i in excludeList){
     exclude += excludeList[i] + "|"
