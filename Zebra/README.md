@@ -29,12 +29,13 @@ Upon submission, a trigger will fire, executing the redCard() function, sending 
 Once the duration has passed, the user will be placed back into their former OU.
 
 ##Scope
-Defining a scope will restrict which OUs authorized staff will be able to referee.  **Coming soon - I hope.
+Defining a scope will restrict which OUs authorized staff will be able to referee.  *Coming soon*.
 
 ##Audit Log
 Because this involves moving users and executes the redCard() function as the GAFE Administrator, Auditing is important.  The audit log will be updated every time a user is moved either by the submission of the script or when their duration runs out.  If there is a username mismatch or an attempted scope violation, it will be logged and shouldn't execute the redCard(). Any and all errors will also be logged.
 ## redCard.gs is in the ALPHA phase.
-There are still *a lot* of items that need to be addressed before BETA 
+There are still *a lot* of items that need to be addressed before BETA.<br>
+This is the function which is attached to the onSubmit() trigger for the associated form.  When triggered, if the SessionUser has been authorized in the *scope* and selected their name in the drop-down menu, The selected students will be moved into the appropriate *Penalty Box OU*.  The AuditLog is triggered and records a line for every student moved, or if any errors occur.
 
-#NOTE:
-Restrictions will still need to be set for the <b>Penalty Box OU</b>.  Failure to do so will result in unrestricted access rather than restricted access. 
+##NOTE:
+Restrictions will still need to be set for the <b>Penalty Box OU</b>.  *Failure to do so will result in _unrestricted access_ rather than restricted access*. It is recommended that the settings are made to the *Parent Penalty Box OU* with exceptions made to the children OUs. 
