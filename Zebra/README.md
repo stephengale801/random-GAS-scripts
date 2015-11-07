@@ -7,7 +7,7 @@ At present, Setup involves creating a Google Form, recording the form ID as well
 **Enable the "AdminSDK" in the Advanced Google Services <i>and</i> the Google Developers Console.  The link to the Google Developers Console for this project will be found in the same popup menu as the Advanced Google Services.**
 
 ##Running functions and Order of Execution 
-The setup functions are found in the importFromGoogle.gs and will only need to be run when changes need to be made to the list of Staff or Students.  There are 2 functions, one to <b>imporStaff</b> and one to <b>importStudents</b>.  The functions work under the assumption that your staff are contained in an OU with the word "Staff" in it.  Likewise, the assumption is that students are within an OU with "Students" in the name.  <b>All</b> sub OUs of both Staff and Students will be included, except for those listed in the "Exceptions" array.  By default OUs with the name Graduating or Suspended will be excluded from both.  To change any of these assumptions, change the string within the file to match your OU structure.
+The setup functions are found in the importFromGoogle.gs and will only need to be run when changes need to be made to the list of Staff or Students.  There are 2 functions, one to <b>importStaff</b> and one to <b>importStudents</b>.  The functions work under the assumption that your staff are contained in an OU with the word "Staff" in it.  Likewise, the assumption is that students are within an OU with "Students" in the name.  <b>All</b> sub OUs of both Staff and Students will be included, except for those listed in the "Exceptions" array.  By default OUs with the name Graduating or Suspended will be excluded from both.  To change any of these assumptions, change the string within the file to match your OU structure.
 
 Once staff and students are imported, a division needs to be made to prevent all the Students from apearing in one Checkbox list.  This division is called buildings, though it may represent something much smaller (Grades or Graduating Class Years).  This will be imported based on your OU structure as well.
 
@@ -15,6 +15,8 @@ At present, there is no "getBuildings()" function.  The location of the building
 Lack of this function is the first fix that needs to be made.
 
 Once buildings are defined - the function "importOptionsToForm" on updateForm.gs can be run.  This function makes changes to the Google Form that was defined during setup.  The form should be blank before running the function.  If there are items on the form, there is a "clearForm" function included in the updateForm.gs file as well.
+
+<b>Just Added</b>: Build-A-Box.gs.<br>Run the function <b>buildABox()</b> to create a new <b>Penalty Box</b> OU at the Root of your OU Structure.  This function should also create sub-OUs based on where your Users are found.  This will record the designated Penalty Box for the original User location.  These values are important for putting users back into their original OU when their time in the Penalty Box is over.
 
 All other files are for the functionality of the addon.
 
