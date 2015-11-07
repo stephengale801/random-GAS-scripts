@@ -13,6 +13,10 @@ try{
   var studentsSheet = ss.getSheets()[2].setName("Students")
   var currentBoxUsersSheet = ss.getSheets()[3].setName("Current Offenders")
   var auditLogSheet = ss.getSheets()[4].setName("Audit Log")
+
+  PenaltyOUSheet.getRange("A1:E1").setValues([["Root PenaltyBoxOU ID","User OUs","User OU Name", "User OU ID","PenaltyBox for OU"]])
+  PenaltyOUSheet.getRange("B2").setValue("=UNIQUE(Students!B2:B)")
+
   } catch(err){}
 
 function updateStaff() {
