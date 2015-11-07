@@ -2,7 +2,6 @@ function redCard(e){
   //executes on form submit
   try{
     //    Utilities.sleep(1500); 
-    Logger.log("%s is (a) %s",e,typeof e)
     if ((e == undefined) || (typeof e == "object")){
       if ((typeof e == "object")){  
         var check = e.response.getEditResponseUrl()};
@@ -14,7 +13,7 @@ function redCard(e){
         e--; redCard(e)}
       else {throw("Error: something screwed up")}
     }
-    Logger.log("Check passed - referencing the correct response")
+    Logger.log("Check passed - referencing the correct response");
   }
   catch(err){Logger.log("Error in phase 1: %s",err);return false}
   
@@ -25,31 +24,32 @@ function redCard(e){
       var sheet = ss.getSheetByName("Staff")
       var rowLen = sheet.getLastRow()
       var users = sheet.getRange(1,1,rowLen).getValues()
-        var userIndex
-        for (i in users){
-          if(users[i] == email){
-            userIndex = i // 0 indexed
-            userIndex++ //For some reason + was not being treated as add, rather concatenate, even when userIndex was defined as a new Number()
-            break
-          }
+      var userIndex
+      for (i in users){
+        if(users[i] == email){
+          userIndex = i; userIndex++;
+          break
         }
+      }
       var scope = sheet.getRange(userIndex, 3).getValue()
+      if (scope === ''){
+        throw("Scope for "+$response.sessionUser+" is not set.")}
       var authorize = getScope(scope)
-      for (i in $response.redCard){  
-       var re = new RegExp($response.redCard[i])
-       if(re.test(authorize)){  //ensure sessionUser has is authorized for those students
-                       //Student     // session user  //duration
-           moveUser($response.redCard[i], email, $response.duration)
-       }
+      for (i in $response.redCard){
+        var re = new RegExp($response.redCard[i])
+        if(re.test(authorize)){
+          //Student     // session user  //duration
+          moveUser($response.redCard[i], email, $response.duration)
+        }
         else{throw($response.sessionUser+" is not authorized to RedCard selected users: "+ $response.redCard); return}
       }
     }
     else{throw($response.sessionUser+" entered incorrect email address")}
   }
   catch(err){Logger.log("Error in phase 2: %s",err)
-            return false}
+  return false}
   
-  
+  //internally used functions  
   function moveUser(student, user, duration){
     var sheet = studentsSheet
     var numRows = sheet.getLastRow()
@@ -57,42 +57,31 @@ function redCard(e){
     var studentIndex 
     for (i in students){
       if(students[i] == student){
-        studentIndex = i // 0 indexed
-        studentIndex++ //For some reason + was not being treated as add, rather concatenate, even when userIndex was defined as a new Number()
-          break
+        studentIndex = i; studentIndex++;
+        break
       }
     }
     var studentOU = sheet.getRange(studentIndex,2).getValue()
-    var PenaltyBoxes = getPenaltyBoxes(AdminDirectory.Orgunits.list("my_customer", {domain: domain,type: 'all'}).organizationUnits)
-    
-    function getPenaltyBoxes(allOUs){
-      var that = new Array()
-      var searchFor = "/Penalty Box"
-      for (i in allOUs){
-        var re = new RegExp(searchFor)
-        if (re.test(allOUs[i].orgUnitPath,"i")){
-          that.push(allOUs[i])
-        }  
+    var PenaltyBox = PenaltyOUSheet.getRange("C2:C"+PenaltyOUSheet.getLastRow()).getValues()
+    var PenaltyBoxIndex
+    for (i in PenaltyBox){
+      if ($response.building == PenaltyBox[i]){
+        PenaltyBoxIndex = i;
+        break;
       }
-      return that
     }
-    
-    for (i in PenaltyBoxes){
-     var re = new RegExp(PenaltyBoxes[i].parentOrgUnitPath)
-     if (re.test(studentOU)){
-       var PenaltyBox = PenaltyBoxes[i]  
-       Logger.log(PenaltyBoxes[i].orgUnitPath)
-     }
-    }
-    var resource = {orgUnitPath: PenaltyBox.orgUnitPath
-    }
+    var PenaltyBoxId = PenaltyOUSheet.getRange("E"+PenaltyBoxIndex).getValue()
+    var OrgUnitPath = AdminDirectory.Orgunits.get('my_customer', [PenaltyBoxId])
+    var resource = {orgUnitPath: OrgUnitPath.orgUnitPath}
+    Logger.log(resource)    
     try{
-//      AdminDirectory.Users.update(resource, student) // Commented out for testing purposes
-      Logger.log("%s successfully moved to %s", student, resource.orgUnitPath)
+      AdminDirectory.Users.update(resource, student)
+      updateAuditLog([student, user, resource.orgUnitPath, duration, $response.timeStamp])
     }
     catch(err){Logger.log("Error moving %s: %s",$response.redCard[i], err)}
   }
-  //getResponse function
+  
+  //internal functions  
   function getResponses(f, response_number){
     if (f == undefined){
       var f = form
@@ -106,7 +95,8 @@ function redCard(e){
       var formResponse = formResponses[response_number];
       var formResponseEditUrl = formResponse.getEditResponseUrl();
       var itemResponses = formResponse.getItemResponses();
-      var sessionUser = formResponse.getRespondentEmail()
+      var sessionUser = formResponse.getRespondentEmail();
+      var timeStamp = formResponse.getTimestamp();
       }
     var redCardUsers = new Array()
     for (i in itemResponses){
@@ -126,6 +116,7 @@ function redCard(e){
       }
     }
     var that={email:email,
+              timeStamp: timeStamp,
               duration:duration,
               building:building,
               redCard:redCardUsers[0],
@@ -134,3 +125,7 @@ function redCard(e){
     return that
   }
 }
+function updateAuditLog(payload){
+    var sheet = auditLogSheet
+    sheet.appendRow(payload)
+  }
