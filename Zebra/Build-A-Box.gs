@@ -12,6 +12,7 @@ function getPenaltyBoxes(OUs,searchFor){
       that.push(OUs[i])
     }
   }
+  Logger.log("%s OUs matching %s",that.length,re)
   return that
 }
 
