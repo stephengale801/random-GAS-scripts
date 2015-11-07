@@ -15,16 +15,13 @@ function redCard(e){
     }
     Logger.log("Check passed - referencing the correct response");
   }
-  catch(err){Logger.log("Error in phase 1: %s",err);return false}
+  catch(err){updateAuditLog([new Date(),"Error in phase 1:",err])}
   
   try{
     //begin checks
     if ($response.email == $response.sessionUser){  //ensure sessionUser is who they say they are.
-      var email = $response.email
-      var sheet = ss.getSheetByName("Staff")
-      var rowLen = sheet.getLastRow()
-      var users = sheet.getRange(1,1,rowLen).getValues()
-      var userIndex
+      var email = $response.email, sheet = ss.getSheetByName("Staff"), rowLen = sheet.getLastRow()
+      var users = sheet.getRange(1,1,rowLen).getValues(), userIndex
       for (i in users){
         if(users[i] == email){
           userIndex = i; userIndex++;
@@ -46,15 +43,13 @@ function redCard(e){
     }
     else{throw($response.sessionUser+" entered incorrect email address")}
   }
-  catch(err){Logger.log("Error in phase 2: %s",err)
-  return false}
-  
+  catch(err){
+  updateAuditLog([new Date(),"Error in phase 2:",err])}
+  updateStudents()
+
   //internally used functions  
   function moveUser(student, user, duration){
-    var sheet = studentsSheet
-    var numRows = sheet.getLastRow()
-    var students = sheet.getRange(1,1,numRows).getValues()
-    var studentIndex 
+    var sheet = studentsSheet, numRows = sheet.getLastRow(), students = sheet.getRange(1,1,numRows).getValues(), studentIndex 
     for (i in students){
       if(students[i] == student){
         studentIndex = i; studentIndex++;
@@ -80,8 +75,6 @@ function redCard(e){
     }
     catch(err){Logger.log("Error moving %s: %s",$response.redCard[i], err)}
   }
-  
-  //internal functions  
   function getResponses(f, response_number){
     if (f == undefined){
       var f = form
@@ -97,7 +90,7 @@ function redCard(e){
       var itemResponses = formResponse.getItemResponses();
       var sessionUser = formResponse.getRespondentEmail();
       var timeStamp = formResponse.getTimestamp();
-      }
+    }
     var redCardUsers = new Array()
     for (i in itemResponses){
       switch(true){
@@ -126,6 +119,6 @@ function redCard(e){
   }
 }
 function updateAuditLog(payload){
-    var sheet = auditLogSheet
-    sheet.appendRow(payload)
-  }
+  var sheet = auditLogSheet
+  sheet.appendRow(payload)
+}
