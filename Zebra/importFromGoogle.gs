@@ -8,6 +8,7 @@ try{
   var ss = SpreadsheetApp.openById(form.getDestinationId())
   var domain = 'YOURDOMAIN'  //define from UI... need to fix
   
+  ss.setActiveSheet(ss.getSheets()[(ss.getSheets().length)-1])
   while (ss.getSheets().length < 6){ss.insertSheet()} 
   var staffSheet = ss.getSheets()[1].setName("Staff")
   var studentsSheet = ss.getSheets()[2].setName("Students")
