@@ -1,13 +1,14 @@
 //"Zebra zebra short and stout find your head and pull it out" - Hockey croud chant directed at the officials, especially when the croud disagrees with a call.
 /*variables*/
 try{
-  var form = FormApp.openById("FORM_ID") //Should be pulled from Addon interface when finished
+  var form = FormApp.openById("1MUk1qG7CvqVGY_qdCD4bvKGC9wU7EnfnRTUU0uRoXSA")
   .setCollectEmail(true)
   .setProgressBar(false)
   .setRequireLogin(true)
+//  .setDestination(FormApp.DestinationType.SPREADSHEET, "1SF-l0Vj7Bv0mkavZfSgIDeAcf9cCHi4LLjwill36Oto")
   var ss = SpreadsheetApp.openById(form.getDestinationId())
-  var domain = 'YOURDOMAIN'  //define from UI... need to fix
-  
+  var domain = 'wgsd.us'  //define from UI or some other manner
+
   ss.setActiveSheet(ss.getSheets()[(ss.getSheets().length)-1])
   while (ss.getSheets().length < 6){ss.insertSheet()}
   
@@ -17,8 +18,8 @@ try{
   var currentBoxUsersSheet = ss.getSheets()[4].setName("Current Offenders");
   var auditLogSheet = ss.getSheets()[5].setName("Audit Log")
   //setting headers and formats
-  PenaltyOUSheet.getRange("A1:E1").setValues([["Root PenaltyBox OU ID","User OUs","User OU Name", "User OU ID","PenaltyBox for OU"]]).setBackground("Gray")
-  PenaltyOUSheet.getRange("F1:F").setFontColor("White")
+  PenaltyOUSheet.getRange("A1:F1").setValues([["Root PenaltyBox OU ID","User OUs","User OU Name", "User OU ID","PenaltyBoxOU","PenaltyBox ID for OU"]]).setBackground("Gray")
+  PenaltyOUSheet.getRange("G1:G").setFontColor("White")
   staffSheet.getRange("A1:E1").setValues([["Staff","OUs","Scope","Building Description","RegExp(OU)"]]).setBackground("Gray")
   studentsSheet.getRange("A1:D1").setValues([["Students","OUs","Penalty Box","End Penalty Time"]]).setBackground("Gray")
   auditLogSheet.getRange("A1:G1").setBackground("Gray")
@@ -110,9 +111,9 @@ function updateStudents(){
   //check to see if Student OUs have Updated
   currentBoxUsersSheet.getRange("A1").setValue('=QUERY(Students!A:D,"select A,B,C,D where C = true")')
   var LastRow = PenaltyOUSheet.getLastRow()
-  var setNewValues = PenaltyOUSheet.getRange("F2").setValue('=Unique(FILTER(Students!B2:B,not(ARRAYFORMULA(REGEXMATCH(Students!B2:B, "Penalty")))))').getValues()
+  var setNewValues = PenaltyOUSheet.getRange("G2").setValue('=Unique(FILTER(Students!B2:B,not(ARRAYFORMULA(REGEXMATCH(Students!B2:B, "Penalty")))))').getValues()
   var originalValues = PenaltyOUSheet.getRange("B2:B"+LastRow)
-  var newValues = PenaltyOUSheet.getRange("F2:F"+LastRow)
+  var newValues = PenaltyOUSheet.getRange("G2:G"+LastRow)
   if (originalValues.getValues().join() != newValues.getValues().join()){
     newValues.copyValuesToRange(PenaltyOUSheet, 2, 2, 2, LastRow)
     //Need to make sure that PenaltyBoxes still line up!
