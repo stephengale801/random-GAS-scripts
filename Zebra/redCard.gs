@@ -66,21 +66,22 @@ function redCard(e){
           break;
         }
       }
-      var PenaltyBoxId = PenaltyOUSheet.getRange("E"+PenaltyBoxIndex).getValue()
+      var PenaltyBoxId = PenaltyOUSheet.getRange("F"+PenaltyBoxIndex).getValue()
       var OrgUnitPath = AdminDirectory.Orgunits.get('my_customer', [PenaltyBoxId])
       var resource = {orgUnitPath: OrgUnitPath.orgUnitPath}
       if (/[0-9]{2}/.test(duration)){
         endTime = "=E"+(auditLogSheet.getLastRow()+1)+"+("+duration.match(/[0-9]{1,2}/)+"*(1/24/60))"
       }
       else if (/[0-9]{1}/.test(duration)){
-        endTIme = "=E"+(auditLogSheet.getLastRow()+1)+"+("+duration.match(/[0-9]{1}/)+"*(1/24))"
+        endTime = "=E"+(auditLogSheet.getLastRow()+1)+"+("+duration.match(/[0-9]{1}/)+"*(1/24))"
       }
-      else{endTime = 60000}
+      else{endTime = ""}
       AdminDirectory.Users.update(resource, student)
       var LastRow =  new Number(auditLogSheet.getLastRow())+1
-      updateAuditLog([student, user, resource.orgUnitPath, duration, $response.timeStamp, endTime,"=IF(NOT(ISBLANK(F"+LastRow+")),(F"+LastRow+"-NOW())<0,F"+LastRow+")"])
+      updateAuditLog([student, user, resource.orgUnitPath, duration, $response.timeStamp, 
+                      endTime,"=IF(NOT(ISBLANK(F"+LastRow+1+")),(F"+LastRow+1+"-NOW())<0,F"+LastRow+1+")"])
       }
-      catch(err){updateAuditLog([new Date(),"Error moving",$response.redCard[i], err])}
+      catch(err){updateAuditLog([new Date(),"Error moving "+student,$response.redCard[i], err])}
     }
     function getResponses(f, response_number){
       if (f == undefined){
