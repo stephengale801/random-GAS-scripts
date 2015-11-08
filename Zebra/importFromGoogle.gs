@@ -1,13 +1,13 @@
 //"Zebra zebra short and stout find your head and pull it out" - Hockey croud chant directed at the officials, especially when the croud disagrees with a call.
 /*variables*/
 try{
-  var form = FormApp.openById("1MUk1qG7CvqVGY_qdCD4bvKGC9wU7EnfnRTUU0uRoXSA")
+  var form = FormApp.openById("FORM_ID")
   .setCollectEmail(true)
   .setProgressBar(false)
   .setRequireLogin(true)
-//  .setDestination(FormApp.DestinationType.SPREADSHEET, "1SF-l0Vj7Bv0mkavZfSgIDeAcf9cCHi4LLjwill36Oto")
+//  .setDestination(FormApp.DestinationType.SPREADSHEET, "SPREADSHEET_ID")
   var ss = SpreadsheetApp.openById(form.getDestinationId())
-  var domain = 'wgsd.us'  //define from UI or some other manner
+  var domain = 'YOUR_DOMAIN'  //define from UI or some other manner
 
   ss.setActiveSheet(ss.getSheets()[(ss.getSheets().length)-1])
   while (ss.getSheets().length < 6){ss.insertSheet()}
