@@ -4,7 +4,7 @@ function Initialize() {
 function installOnEdit(){
   ScriptApp.newTrigger("UpdateForm")
   .forSpreadsheet(ss)
-  .onChange()
+  .onEdit()
   .create()
 }
 function installOnSubmit(){
