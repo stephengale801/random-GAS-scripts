@@ -11,11 +11,10 @@ function getScope(scope){
    for (i in page.users){
      student = page.users[i]
      if (re.test(student.orgUnitPath)){
-       students.push(student) 
+       students.push(student.primaryEmail) 
      }}
    pageToken = page.nextPageToken
  }
    while(pageToken){}
-  Logger.log(students.length)
   return students
 }
