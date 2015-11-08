@@ -13,9 +13,9 @@ function importOptionsToForm(){
     .setChoiceValues(staff)
     .setTitle("Select your email from the list")
     var class = form.addListItem()
-    .setTitle("Where is the student located")
+    .setTitle("Where are the student(s) located")
     var time = form.addListItem()
-    .setChoiceValues(["30 Minutes","45 Minutes","1 hour","2 hours","Indefinitely"]) // could be defined in the Spreadsheet/UI during setup.
+    .setChoiceValues(["30 Minutes","45 Minutes","1 hour","2 hours","Indefinitely"]) //pull from Spreadsheet or User Input.
     .setTitle("How long shall we keep the user(s) in the Penalty Box?")
     }
   else{
@@ -46,15 +46,14 @@ function importOptionsToForm(){
       .setTitle(buildings[i][0]+" Students")
       }
   }
-  Logger.log(buildingChoices)
   class.setChoices(buildingChoices)
-  
   var studentItems = form.getItems(FormApp.ItemType.CHECKBOX)
   for (i in studentItems){
     var theseStudents = getStudents(buildings[i][1])
     studentItems[i].asCheckboxItem()
     .setChoiceValues(theseStudents)
   }
+  
   // internal functions  
   function getStaff(){
     var sheet = ss.getSheetByName("Staff")
@@ -79,7 +78,7 @@ function importOptionsToForm(){
       }
     }
     return that
-  }  
+  }
   function a(buildings,page){
     var that = []
     that.push(buildings)
@@ -93,7 +92,6 @@ function importOptionsToForm(){
     var sheet = ss.getSheetByName("Students")
     var numRows = sheet.getLastRow()
     var students = sheet.getRange(2,1,numRows-1,2).getValues()
-    
     if(a){
       var that = students
       students = new Array()
