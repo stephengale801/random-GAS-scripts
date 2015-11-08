@@ -63,12 +63,14 @@ function buildABox(){
     //    check to see if OU exists.  If TRUE, copy the OrgUnitId to the PenaltyBox ID column; If FALSE, create new OrgUnit, the record;
     for(i=2; i < lastRow; i++){
       try{
-        var value = Sheet.getRange("E"+i).getValue()
+        var value = Sheet.getRange("F"+i).getValue()
           Logger.log("%s : %s", value, re.test(value))
 
         if (value === ''){
-//          check to see if OU exists.*** STILL NEED TO DO***
+//          check to see if OU exists.
+          if (re.test(value)){Logger.log("%s Exists",value)}
           var name =  Sheet.getRange("C"+i).getValue()
+          
           if (/Error|Penalty/i.test(name)){
             continue;}
           else{
@@ -76,7 +78,9 @@ function buildABox(){
                             description: "Penalty Box -- created by Zebra",
                             parentOrgUnitId: ParentId}
             var NewChild = AdminDirectory.Orgunits.insert(resource, 'my_customer')
-            Sheet.getRange("E"+i).setValue(NewChild.orgUnitId)
+            Sheet.getRange("F"+i).setValue(NewChild.orgUnitId)
+            Sheet.getRange("E"+i).setValue(NewChild.orgUnitPath)            
+            
           }};}
       catch(err){updateAuditLog([new Date(), Session.getEffectiveUser(), "Error in Build-A-Box - "+resource.name,err])}
     }}
@@ -97,5 +101,5 @@ function clearPenaltyBoxes(ParentID){
     }
     catch(err){updateAuditLog([new Date(),Session.getEffectiveUser(),"Error in Clearing Penalty Box - "+children.organizationUnits[i].orgUnitPath, err])}
   }
-  PenaltyOUSheet.getRange("C2:E").clear()
+  PenaltyOUSheet.getRange("C2:G").clear()
 }
