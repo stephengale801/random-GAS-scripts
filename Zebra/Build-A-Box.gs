@@ -16,41 +16,54 @@ function getPenaltyBoxes(OUs,searchFor){
 }
 
 function buildABox(){
-  var RootOuId, PenaltyBox, PenaltyBoxOU, PenaltyBoxId, UserOuNames, reply
-  PenaltyBoxId = PenaltyOUSheet.getRange("A2").getValue()
+  var RootOuId, PenaltyBox, PenaltyBoxOU, PenaltyBoxId = "", UserOuNames, reply
   RootOuId = AdminDirectory.Orgunits.list("my_customer", {domain:domain, type:"children"}).organizationUnits[0].parentOrgUnitId
-  if (PenaltyBoxId === ""){
-    Logger.log("No ID Defined - What do you want to do")
-    //prompt user if they want to have Zebra bulid a Penalty Box.
-    reply = "Yes"
-    //create PenaltyBox at Root Level with sub OUs for each Org Unit contining Users:
+  while(PenaltyBoxId === ""){
+    if (PenaltyOUSheet.getRange("A2").getValue() != ""){
+      PenaltyBoxId = PenaltyOUSheet.getRange("A2").getValue()
+      break
+    }
+    Logger.log("No ID Defined - Checking for existing Penalty Box")
+    PenaltyBox = getPenaltyBoxes(AdminDirectory.Orgunits.list("my_customer", {domain:domain, type:"children"}).organizationUnits)
+    if (PenaltyBox.length == 1){
+      PenaltyOUSheet.getRange("A2").setValue(PenaltyBox[0].orgUnitId)
+      Logger.log(PenaltyBox[0].orgUnitId)
+      PenaltyBoxId = PenaltyBox[0].orgUnitId
+      break
+    }
+    //Do you want to create New OrgUnit named "PenaltyBox" (Yes) or use an existing Org Unit (No)?
+    reply = "Yes" 
     if (reply == "Yes"){
       var resource = {name: "Penalty Box",
                       parentOrgUnitId: RootOuId,
                       description: "OU for users restricted for one reason or another -- Created by Zebra"}
       var PenaltyBoxOU = AdminDirectory.Orgunits.insert(resource, "my_customer")
       PenaltyOUSheet.getRange("A2").setValue(PenaltyBoxOU.orgUnitId)
+      break
+    }
+    if (reply == "No"){
+      //Choose and existing OU to use as a Penalty Box :
+      PenaltyOUSheet.getRange("A2").setValue("/*OU ID*/")
+      break
     }
   }
-  else{
-    Logger.log("Using OU with Name %s and ID %s",AdminDirectory.Orgunits.get("my_customer", [PenaltyBoxId]).name, PenaltyBoxId)
-    var lastRow = PenaltyOUSheet.getLastRow()
-    for (var j =2; j < lastRow; j++){
-      var NewBox = getPenaltyBoxes(AdminDirectory.Orgunits.list("my_customer",
-                                                                {domain:domain, type:"all"}).organizationUnits,
-                                   PenaltyOUSheet.getRange("B"+j).getValues())
-      try{
-        PenaltyOUSheet.getRange("C"+j).setValue(NewBox[0].name)
-        PenaltyOUSheet.getRange("D"+j).setValue(NewBox[0].orgUnitId)
-      }
-      catch(err){
-        PenaltyOUSheet.getRange("C"+j).setValue("Error: Cannot find Org")
-        updateAuditLog([new Date(), Session.getEffectiveUser(), err])}
+//  Logger.log("Using OU with Name %s and ID %s",AdminDirectory.Orgunits.get("my_customer", [PenaltyBoxId]).name, PenaltyBoxId)
+  var lastRow = PenaltyOUSheet.getLastRow()
+  for (var j =2; j < lastRow; j++){
+    var NewBox = getPenaltyBoxes(AdminDirectory.Orgunits.list("my_customer",
+                                                              {domain:domain, type:"all"}).organizationUnits,
+                                 PenaltyOUSheet.getRange("B"+j).getValues())
+    try{
+      PenaltyOUSheet.getRange("C"+j).setValue(NewBox[0].name)
+      PenaltyOUSheet.getRange("D"+j).setValue(NewBox[0].orgUnitId)
     }
+    catch(err){
+      PenaltyOUSheet.getRange("C"+j).setValue("Error: Cannot find Org")
+      updateAuditLog([new Date(), Session.getEffectiveUser(), err])}
   }
   createOU(PenaltyBoxId, PenaltyOUSheet)
   
-// internal functions  
+  // internal functions  
   function createOU(ParentId, Sheet){
     var lastRow = Sheet.getLastRow();
     var boxes = getPenaltyBoxes();
@@ -64,13 +77,11 @@ function buildABox(){
     for(i=2; i < lastRow; i++){
       try{
         var value = Sheet.getRange("F"+i).getValue()
-          Logger.log("%s : %s", value, re.test(value))
-
+        Logger.log("%s : %s", value, re.test(value))
         if (value === ''){
-//          check to see if OU exists.
+          //          check to see if OU exists.
           if (re.test(value)){Logger.log("%s Exists",value)}
           var name =  Sheet.getRange("C"+i).getValue()
-          
           if (/Error|Penalty/i.test(name)){
             continue;}
           else{
