@@ -1,19 +1,19 @@
 function Initialize() {
+  //Function to Install Addon - Not Yet Built
   //run checks to see what is present - execute next function in sequence;
-  var status, staffCell, studentCell, buildingCell, scopeCell, formCreateCell, formPopulateCell, submitCell, timeCell, editCell, formIdCell
+  var status, staffCell, studentCell, buildingCell, scopeCell, formCreateCell, formPopulateCell, submitCell, timeCell, editCell, formIdCell, form
   
-  formIdCell = PenaltyOUSheet.getRange("A2")
   staffCell = PenaltyOUSheet.getRange("A4")
   studentCell = PenaltyOUSheet.getRange("A6")
   buildingCell = PenaltyOUSheet.getRange("A8")
   scopeCell = PenaltyOUSheet.getRange("A10")
   formCreateCell = PenaltyOUSheet.getRange("A12")
-  formPopulateCell = PenaltyOUSheet.getRange("A12")
+  formPopulateCell = PenaltyOUSheet.getRange("A14")
   submitCell = PenaltyOUSheet.getRange("A16")
   timeCell = PenaltyOUSheet.getRange("A18")
   editCell = PenaltyOUSheet.getRange("A20")
+  formIdCell = PenaltyOUSheet.getRange("A22")
   
-
   var status = {
     staffImported: staffCell.getValue(),
     studentsImported: studentCell.getValue(),
@@ -25,73 +25,85 @@ function Initialize() {
     timeTrigger: timeCell.getValue(),
     onEditTrigger: editCell.getValue()
   }
-  switch(true){
-    case (status.staffImported == ''):
-      Logger.log("Updating Staff")
-      updateStaff()
-      staffCell.setValue("Staff Imported ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Imported Staff: Success"])
-      break;
-    case (status.studentsImported == ''):
-      updateStudents()
-      staffCell.setValue("Students Imported ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Imported Students: Success"])
-      break;
-    case (status.buildingsPopulated == ''):
-      buildABox()
-      staffCell.setValue("Penalty Box Created ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Build-a-Box: Success"])
-      break;
-    case (status.formCreateCell == ''):
-      var form = FormApp.create("Zebra")
-      .setCollectEmail(true)
-      .setProgressBar(false)
-      .setRequireLogin(true)
-      .setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId())
-      formIdCell.setValue(form.getId())
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Created Zebra Form: Success"])
-      
-    case (status.formPopulateCell == ''):
-      updateForm()
-      staffCell.setValue("Zebra Form Created ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Updated Zebra Form: Success"])
-      break;
-    case (status.submitTrigger == ''):
-      installOnSubmit()
-      staffCell.setValue("Submit Trigger Installed ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Submit Trigger: Success"])
-      break;
-    case (status.timeTrigger == ''):
-      installTimeTrigger()
-      staffCell.setValue("Time Trigger Installed ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
-      break;
-    case (status.onEditTrigger == ''):
-      installOnEdit()
-      staffCell.setValue("Edit Trigger Installed ✓")
-      .setBackground("Green")
-      .setHorizontalAlignment("center")
-      updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
-      break;
-      
+  while (status.onEditTrigger == ''){
+    switch(true){
+      case (status.staffImported == ''):
+        updateStaff()
+        staffCell.setValue("Staff Imported ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Imported Staff: Success"])
+        status.staffImported = staffCell.getValue()
+        break;
+      case (status.studentsImported == ''):
+        updateStudents()
+        studentCell.setValue("Students Imported ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Imported Students: Success"])
+        status.studentsImported = studentCell.getValue()
+        break;
+      case (status.buildingsPopulated == ''):
+        var buildingsRange1 = PenaltyOUSheet.getRange("B2")
+        .setValue('=Unique(FILTER(Students!B2:B,not(ARRAYFORMULA(REGEXMATCH(Students!B2:B, "Penalty")))))')
+        var buildingsRange2 = staffSheet.getRange("D2")
+        .setValue('=Unique(FILTER('+"'Penalty Box'!C2:C,not(ARRAYFORMULA(REGEXMATCH('Penalty Box'!C2:C,"+'"Penalty|Error")))))')        
+        buildABox()
+        buildingCell.setValue("Penalty Box Created ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Build-a-Box: Success"])
+        status.buildingsPopulated = buildingCell.getValue()
+        break;
+      case (status.formCreated == ''):
+        form = FormApp.create("Zebra 2")
+        .setCollectEmail(true)
+        .setProgressBar(false)
+        .setRequireLogin(true)
+        .setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId())
+        formIdCell.setValue(form.getId())
+        formCreateCell.setValue("Zebra form Created ✓")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Created Zebra Form: Success"])
+        status.formCreated = formCreateCell.getValue()
+        break;
+      case (status.formPopulate == ''):
+        importOptionsToForm()
+        formPopulateCell.setValue("Zebra Form Updated ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Updated Zebra Form: Success"])
+        status.formPopulate = formPopulateCell.getValue()
+        break;
+      case (status.submitTrigger == ''):
+        installOnSubmit()
+        submitCell.setValue("Submit Trigger Installed ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Submit Trigger: Success"])
+        status.submitTrigger = submitCell.getValue()
+        break;
+      case (status.timeTrigger == ''):
+        installTimeTrigger()
+        timeCell.setValue("Time Trigger Installed ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
+        status.timeTrigger = timeCell.getValue()
+        break;
+      case (status.onEditTrigger == ''):
+        installOnEdit()
+        editCell.setValue("Edit Trigger Installed ✓")
+        .setBackground("Green")
+        .setHorizontalAlignment("center")
+        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
+        status.onEditTrigger = editCell.getValue()
+        break;
+        
+    }
   }
 }
-
-
 function installOnEdit(){
-  ScriptApp.newTrigger("UpdateForm")
+  ScriptApp.newTrigger("importOptionsToForm")
   .forSpreadsheet(ss)
   .onEdit()
   .create()
