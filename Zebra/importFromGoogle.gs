@@ -1,5 +1,5 @@
 //"Zebra zebra short and stout find your head and pull it out" - Hockey croud chant directed at the officials, especially when the croud disagrees with a call.
-  var ss = SpreadsheetApp.openById("1m8UG2x61-87Wfidh_DgGXSftcVKk3JJ01-djXnJ8XcA")
+  var ss = SpreadsheetApp.openById("SPREADSHEET_ID")
 
   var domain = Session.getEffectiveUser().getEmail().split("@")[1]
   var statusSheet, form
