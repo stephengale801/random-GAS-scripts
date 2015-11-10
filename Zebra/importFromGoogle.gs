@@ -4,7 +4,7 @@
   var domain = Session.getEffectiveUser().getEmail().split("@")[1]
   var statusSheet, form
   if (ss.getFormUrl() == null){
-    form = FormApp.create("Zebra 4")
+    form = FormApp.create("Zebra")
         .setCollectEmail(true)
         .setProgressBar(false)
         .setRequireLogin(true)
