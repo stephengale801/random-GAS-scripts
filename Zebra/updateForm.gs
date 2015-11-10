@@ -1,4 +1,4 @@
-function importOptionsToForm(){
+function importOptionsToForm(form){
   var items = form.getItems()
   var pages = form.getItems(FormApp.ItemType.PAGE_BREAK)
   var pagesArray = new Array()
@@ -107,8 +107,7 @@ function importOptionsToForm(){
   }
 }
 
-function clearForm(form){
-  form
+function clearForm(){
   var items= form.getItems().length;
   while(form.getItems().length!=0){        
     try{      
