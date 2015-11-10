@@ -1,3 +1,5 @@
+##https://goo.gl/pPD6AB </br>view Only GAS-Editor
+
 #Zebra
 is a referee style application (hopefully addon) which allows Google Apps Administrators to delegate sending users to a pre-built Penalty Box OU.  The idea being that the Penalty Box would have restricted settings and limited navigation capability.  Users are sent there as part of some disciplinary action.  The name is derived from my days watching our High School's hockey team and being kicked out of more than one match for chanting at the refs "Zebra zebra short and stout, find your head and pull it out."
 
