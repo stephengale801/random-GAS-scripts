@@ -13,7 +13,7 @@ Run the function **initialize()** found in the file Triggers.gs.  If you are run
 
 You can check the current progress of the installation by going to the "Status" sheet withing the Spreadsheet.  An Editor to the form will then have to populate the Scope for each staff member.  Without this, users will be able to submit the form, but nothing will happen other than an audit log will be created stating they weren't permitted to move the user. 
 
-***TODO:*** Upon final completion, send an email to the user with a shortened link to the **Google Form**.
+~~***TODO:*** Upon final completion, send an email to the user with a shortened link to the **Google Form**.~~
 
 ##NOTE:
 Restrictions will still need to be set for the <b>Penalty Box</b> OU.  **Failure to do so will result in _unrestricted access_ rather than restricted access**. It is recommended that the settings are made to the *Parent Penalty Box OU* with exceptions made to the children OUs.
