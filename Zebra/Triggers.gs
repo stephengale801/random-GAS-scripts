@@ -1,33 +1,27 @@
 function Initialize() {
-  //Function to Install Addon - Not Yet Built
   //run checks to see what is present - execute next function in sequence;
-  var status, staffCell, studentCell, buildingCell, scopeCell, formCreateCell, formPopulateCell, submitCell, timeCell, editCell, formIdCell, form
+  var status, staffCell, studentCell, buildingCell, formPopulateCell, submitCell, timeCell, editCell
   
-  staffCell = PenaltyOUSheet.getRange("A4")
-  studentCell = PenaltyOUSheet.getRange("A6")
-  buildingCell = PenaltyOUSheet.getRange("A8")
-  scopeCell = PenaltyOUSheet.getRange("A10")
-  formCreateCell = PenaltyOUSheet.getRange("A12")
-  formPopulateCell = PenaltyOUSheet.getRange("A14")
-  submitCell = PenaltyOUSheet.getRange("A16")
-  timeCell = PenaltyOUSheet.getRange("A18")
-  editCell = PenaltyOUSheet.getRange("A20")
-  formIdCell = PenaltyOUSheet.getRange("A22")
+  staffCell = statusSheet.getRange("D2")
+  studentCell = statusSheet.getRange("D3")
+  buildingCell = statusSheet.getRange("D4")
+  formPopulateCell = statusSheet.getRange("D5")
+  submitCell = statusSheet.getRange("D6")
+  timeCell = statusSheet.getRange("D7")
+  editCell = statusSheet.getRange("D8")
   
   var status = {
     staffImported: staffCell.getValue(),
     studentsImported: studentCell.getValue(),
     buildingsPopulated: buildingCell.getValue(),
-    scopesDefined: scopeCell.getValue(),
-    formCreated: formCreateCell.getValue(),
     formPopulate: formPopulateCell.getValue(),
     submitTrigger: submitCell.getValue(),
     timeTrigger: timeCell.getValue(),
     onEditTrigger: editCell.getValue()
   }
-  while (status.onEditTrigger == ''){
+  while (status.timeTrigger == ''){
     switch(true){
-      case (status.staffImported == ''):
+      case (status.staffImported == ''): //1
         updateStaff()
         staffCell.setValue("Staff Imported ✓")
         .setBackground("Green")
@@ -35,7 +29,7 @@ function Initialize() {
         updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Imported Staff: Success"])
         status.staffImported = staffCell.getValue()
         break;
-      case (status.studentsImported == ''):
+      case (status.studentsImported == ''): //2
         updateStudents()
         studentCell.setValue("Students Imported ✓")
         .setBackground("Green")
@@ -43,7 +37,7 @@ function Initialize() {
         updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Imported Students: Success"])
         status.studentsImported = studentCell.getValue()
         break;
-      case (status.buildingsPopulated == ''):
+      case (status.buildingsPopulated == ''): //3
         var buildingsRange1 = PenaltyOUSheet.getRange("B2")
         .setValue('=Unique(FILTER(Students!B2:B,not(ARRAYFORMULA(REGEXMATCH(Students!B2:B, "Penalty")))))')
         var buildingsRange2 = staffSheet.getRange("D2")
@@ -55,26 +49,15 @@ function Initialize() {
         updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Build-a-Box: Success"])
         status.buildingsPopulated = buildingCell.getValue()
         break;
-      case (status.formCreated == ''):
-        form = FormApp.create("Zebra 2")
-        .setCollectEmail(true)
-        .setProgressBar(false)
-        .setRequireLogin(true)
-        .setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId())
-        formIdCell.setValue(form.getId())
-        formCreateCell.setValue("Zebra form Created ✓")
-        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Created Zebra Form: Success"])
-        status.formCreated = formCreateCell.getValue()
-        break;
-      case (status.formPopulate == ''):
-        importOptionsToForm()
+      case (status.formPopulate == ''): //4
+        importOptionsToForm(form)
         formPopulateCell.setValue("Zebra Form Updated ✓")
         .setBackground("Green")
         .setHorizontalAlignment("center")
         updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Updated Zebra Form: Success"])
         status.formPopulate = formPopulateCell.getValue()
         break;
-      case (status.submitTrigger == ''):
+      case (status.submitTrigger == ''): //5
         installOnSubmit()
         submitCell.setValue("Submit Trigger Installed ✓")
         .setBackground("Green")
@@ -82,7 +65,7 @@ function Initialize() {
         updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Submit Trigger: Success"])
         status.submitTrigger = submitCell.getValue()
         break;
-      case (status.timeTrigger == ''):
+      case (status.timeTrigger == ''): //6
         installTimeTrigger()
         timeCell.setValue("Time Trigger Installed ✓")
         .setBackground("Green")
@@ -90,15 +73,14 @@ function Initialize() {
         updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
         status.timeTrigger = timeCell.getValue()
         break;
-      case (status.onEditTrigger == ''):
-        installOnEdit()
-        editCell.setValue("Edit Trigger Installed ✓")
-        .setBackground("Green")
-        .setHorizontalAlignment("center")
-        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
-        status.onEditTrigger = editCell.getValue()
-        break;
-        
+//      case (status.onEditTrigger == ''): //7
+//        installOnEdit()
+//        editCell.setValue("Edit Trigger Installed ✓")
+//        .setBackground("Green")
+//        .setHorizontalAlignment("center")
+//        updateAuditLog([new Date(), Session.getActiveUser(), "Inital installation - Installed Time Trigger: Success"])
+//        status.onEditTrigger = editCell.getValue()
+//        break;
     }
   }
 }
