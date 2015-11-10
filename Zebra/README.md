@@ -31,15 +31,15 @@ Because this involves moving users and executes the redCard() __function as the 
 
 #Functions:
 **Triggers.gs**<br>
-__Initialize()__ - runs all functions in proper order in.  Has built-in checks to make sure that if the execution goes longer than planned it can pickup where it left off by re-running the Initialize() function. 
+_Initialize()_ - runs all functions in proper order in.  Has built-in checks to make sure that if the execution goes longer than planned it can pickup where it left off by re-running the Initialize() function. 
 
-__installOnEdit()__ - is one of the triggers that is **not** installed by the Initialize() function (perhaps at a later date).  This function installs an "onEdit" trigger to the Spreadsheet where, when the spreadsheet is edited, the Form is updated.  This was removed due to the excessive number of Edits taking place on the Spreadsheet.  __A range limiter will need to be added to the importOptionsToForm() function.__
+_installOnEdit()_ - is one of the triggers that is **not** installed by the Initialize() function (perhaps at a later date).  This function installs an "onEdit" trigger to the Spreadsheet where, when the spreadsheet is edited, the Form is updated.  This was removed due to the excessive number of Edits taking place on the Spreadsheet.  __A range limiter will need to be added to the importOptionsToForm() function.__
 
-__installOnSubmit()__ - attaches the Form submit function to the redCard() function.
+_installOnSubmit()_ - attaches the Form submit function to the redCard() function.
 
-__installTimeTrigger()__ - attaches a trigger that runs checkExpiration() every 3 minutes (can change to every minute if needed)
+_installTimeTrigger()_ - attaches a trigger that runs checkExpiration() every 3 minutes (can change to every minute if needed)
 
-__checkExpiration()__ - checks to see if any *Current Offenders* should be removed from the Penalty Box. 
+_checkExpiration()_ - checks to see if any *Current Offenders* should be removed from the Penalty Box. 
 
 **Build-A-Box.gs**<br>
 _buildABox()_ - creates a new <b>Penalty Box</b> OU at the Root of your OU Structure unless one exists with that name, in which case, it uses that OU.  This function should also create sub-OUs based on where your Users are found.  A matrix is created, associating the original OU and the penalty box sub-OU. These values are used toput users back into their original OU when their time in the Penalty Box is over.
@@ -52,17 +52,14 @@ _redCard()_ - is the function which is attached to the onSubmit() trigger for th
 _updateAuditLog()_ - basic function to update range of the Audit Log Sheet with pertinent information.
 
 **importFromGoogle.gs**<br>
-__updateStaff()__ - pulls data from the AdminDirectory inlcuding OU Structure, Staff Email addresses and stores the information statically on the Staff Sheet.  This is later used to build populate the Google Form which is used to deliver the User Experience.
+_updateStaff()_ - pulls data from the AdminDirectory inlcuding OU Structure, Staff Email addresses and stores the information statically on the Staff Sheet.  This is later used to build populate the Google Form which is used to deliver the User Experience.
 
-__updateStudents()__ - same as updateStaff(), except for students. 
+_updateStudents()_ - same as updateStaff(), except for students. 
 
 **updateForm.gs**<br>
-__importOptionsToForm(form)__ - builds the form structure, populates questsions, changes user navigation based on answer... everything to make the End User's experience as simplified as possible.
+_importOptionsToForm(form)_ - builds the form structure, populates questsions, changes user navigation based on answer... everything to make the End User's experience as simplified as possible.
 
-__clearForm(form)__ removes all items from the existing form.  Former submissions are still stored and upon new creation will be listed in a separate column in the Form Response page. -- basically there to make my life easier during development.
+_clearForm(form)_ removes all items from the existing form.  Former submissions are still stored and upon new creation will be listed in a separate column in the Form Response page. -- basically there to make my life easier during development.
 
 **scope.gs**<br>
-__getScope(scope)__ - used by the script to determine whether the Session User has permission to make the requested changes.  **This may be enough where having the user select their email might not be necessary,** though selecting email would still be necessary if we wanted to limit their Building selections at a later date.
-
-
-
+_getScope(scope)_ - used by the script to determine whether the Session User has permission to make the requested changes.  **This may be enough where having the user select their email might not be necessary,** though selecting email would still be necessary if we wanted to limit their Building selections at a later date.
