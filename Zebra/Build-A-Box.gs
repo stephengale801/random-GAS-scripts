@@ -72,8 +72,6 @@ function buildABox(){
       var child = boxes[i];
       children.push(child)
     };
-    Logger.log(children)
-    return
     var re = new RegExp(children.organizationUnits)
     //    check to see if OU exists.  If TRUE, copy the OrgUnitId to the PenaltyBox ID column; If FALSE, create new OrgUnit, the record;
     for(i=2; i < lastRow; i++){
