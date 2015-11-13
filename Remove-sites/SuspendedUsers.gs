@@ -1,5 +1,5 @@
 function removeSites() {
-  var domain = 'YOURDOMAIN'
+  var domain = Session.getEffectiveUser().getEmail().split("@")[1]
   var allSites = SitesApp.getAllSites(domain)
   
   for (i in allSites){
