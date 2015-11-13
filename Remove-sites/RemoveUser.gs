@@ -1,5 +1,5 @@
 function removeUser() {
-  var allSites, site, domain = "YOURDOMAIN", viewers, editors, owners, user = new RegExp("SomeUser")
+  var allSites, site, domain = Session.getEffectiveUser().getEmail().split("@")[1], viewers, editors, owners, user = new RegExp("SomeUser")
   var removeEditor = false
   var removeOwner = false
   var removeViewer = false
