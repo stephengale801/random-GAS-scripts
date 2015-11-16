@@ -1,5 +1,5 @@
 function getUsers(OU) {
-  var DOMAIN = "YOUR_DOMAIN"
+  var DOMAIN = Session.getEffectiveUser().getEmail().split("@")[1]
   OU = new RegExp(OU)
   var pages, pageToken, users = new Array(), user
   
