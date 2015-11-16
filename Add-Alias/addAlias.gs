@@ -10,9 +10,8 @@ function AddAlias(user, alt){
   var numAliases = AdminDirectory.Users.Aliases.list(user).aliases.length
   //check if alias exists
   var re = new RegExp(alt,"g")
-  Logger.log(re)
   if (re.test(aliases)){
-    Logger.log("Alias exists, skipping")}
+    Logger.log("Alias %s exists, skipping",alt)}
   else{
   var x = AdminDirectory.Users.get(user).aliases.length
   AdminDirectory.Users.Aliases.insert(alt, user)
