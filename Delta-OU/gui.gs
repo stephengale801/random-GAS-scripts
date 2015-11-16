@@ -1,4 +1,4 @@
-var DOMAIN = "YOUR_DOMAIN"
+var DOMAIN = Session.getEffectiveUser().getEmail().split("@")[1]
 var ss = "YOUR_SPREADSHEET_ID"
 
 function doGet() {
