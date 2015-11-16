@@ -1,5 +1,5 @@
 function updateStudents() {
-  var DOMAIN = "YOUR_DOMAIN" 
+  var DOMAIN = Session.getEffectiveUser().getEmail().split("@")[1] 
   var OU = '1.0 ES Student' //String value of OU you want to update
   var ss = SpreadsheetApp.openById("SPREADSHEET_ID")
   var sheet = ss.getSheetByName(OU.replace(" Student","")) //OCD Cleanup... My sheet was named '1.0 ES'
