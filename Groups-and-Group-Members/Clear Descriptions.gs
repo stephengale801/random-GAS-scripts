@@ -1,5 +1,4 @@
-//variables to pass from UI
-var domain = 'YOUR_DOMAIN'
+var domain = Session.getEffectiveUser().getEmail().split("@")[1]
 
 //start functions
 function getClearGroupDescriptions(){
