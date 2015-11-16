@@ -5,7 +5,7 @@ function listAllStudents() {
   now = new Date();
   do {
     page = AdminDirectory.Users.list({
-      domain: 'YOUR_DOMAIN',
+      domain: Session.getEffectiveUser().getEmail().split("@")[1],
       orderBy: 'familyName',
       maxResults: 100,
       pageToken: pageToken
