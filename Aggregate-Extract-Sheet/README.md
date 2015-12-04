@@ -1,0 +1,1 @@
+Simple scripts used to either pull together sheets within a folder into 1 Master Sheet (**Aggregate**) or take each sheet in a Workbook and copy it's values to a newly created individual Workbook (Extract).
