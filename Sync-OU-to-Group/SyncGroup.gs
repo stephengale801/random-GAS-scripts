@@ -3,7 +3,7 @@ function syncGroup(a,b){
   a = ["Class of 2022"]
   var numRows = ss.getSheets()[0].getMaxRows()
   var numColumns = ss.getSheets()[0].getMaxColumns()
-  var domain = 'YOURDOMAIN'
+  var domain = Session.getEffectiveUser().getEmail().split("@")[1]
   var page, pageToken
   var groups =  new Array(), newMembers = new Array();
 //get all Groups  
