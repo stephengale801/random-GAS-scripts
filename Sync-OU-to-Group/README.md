@@ -3,7 +3,7 @@
 
 ##Setup
 ####All files are saved in a single Google Apps Script project as separate script files.
-<b>First</b> - Change all instances of "YOURDOMAIN" to a string matching the domain you're administering.
+--<b>First</b> - Change all instances of "YOURDOMAIN" to a string matching the domain you're administering.--
 
 <b>Second</b> - Change all instances of "SPREADSHEET_ID" to the ID of a new Spreadsheet which you have edit privileges to.
 
