@@ -42,8 +42,8 @@ function GettingStarted(a,b) {
   var allOUs, targetOU, parentOU, newParentOU //variables referring to OU Objects/Arrays
   var user, timeStamp, state, page, pageToken //Other variables
   
-  var domain = 'wgsd.us'                                         //temporary hard coded
-  var SSID = "1rNkaYF7fyEos9OdIR4YyjM5JZmvkN6q2u1nwE12wkEc"      //temporary hard coded
+  var domain = Session.getEffectiveUser().getEmail().split("@")[1]
+  var SSID = "SPREADSHEET_ID"      //temporary hard coded
   var customerId = 'my_customer'
   
   ss = SpreadsheetApp.openById(SSID)
